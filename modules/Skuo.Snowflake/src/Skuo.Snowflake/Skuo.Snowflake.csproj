@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp\Volo.Abp.csproj" />
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Settings\Volo.Abp.Settings.csproj" />
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Localization.Abstractions\Volo.Abp.Localization.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.VirtualFileSystem\Volo.Abp.VirtualFileSystem.csproj" />
+  </ItemGroup>
+</Project>

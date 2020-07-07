@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Ddd.Application\Volo.Abp.Ddd.Application.csproj" />
+    <ProjectReference Include="..\Skuo.Organization.Domain.Shared\Skuo.Organization.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

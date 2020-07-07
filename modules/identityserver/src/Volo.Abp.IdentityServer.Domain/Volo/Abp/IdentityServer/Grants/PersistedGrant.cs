@@ -3,6 +3,9 @@ using Volo.Abp.Domain.Entities;
 
 namespace Volo.Abp.IdentityServer.Grants
 {
+    /// <summary>
+    /// 授权信息
+    /// </summary>
     public class PersistedGrant : AggregateRoot<Guid>
     {
         public virtual string Key { get; set; }
