@@ -25,7 +25,7 @@ namespace Volo.Abp.Identity
                 )
             );
 
-            using (CultureHelper.Use("tr"))
+            using (CultureHelper.Use("zh-Hans"))
             {
                 var localizeMessage = exception.LocalizeMessage(new LocalizationContext(ServiceProvider));
                 

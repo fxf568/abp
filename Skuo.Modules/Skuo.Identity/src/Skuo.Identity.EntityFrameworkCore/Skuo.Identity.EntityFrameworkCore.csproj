@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Skuo.Identity</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SKuo.Users\src\Skuo.Users.EntityFrameworkCore\Skuo.Users.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Skuo.Identity.Domain\Skuo.Identity.Domain.csproj" />
+  </ItemGroup>
+</Project>

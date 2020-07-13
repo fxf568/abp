@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.Domain", "src\Skuo.IdentityServer.Domain\Skuo.IdentityServer.Domain.csproj", "{CBD8D898-6BE5-4E97-AEB8-CEC76BE43343}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.Domain.Shared", "src\Skuo.IdentityServer.Domain.Shared\Skuo.IdentityServer.Domain.Shared.csproj", "{9342B4BE-FFE6-4B2E-8F5C-F55040C6F922}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.EntityFrameworkCore", "src\Skuo.IdentityServer.EntityFrameworkCore\Skuo.IdentityServer.EntityFrameworkCore.csproj", "{1FCA5C27-485C-4524-AB21-BDADF7505908}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.MongoDB", "src\Skuo.IdentityServer.MongoDB\Skuo.IdentityServer.MongoDB.csproj", "{9182D829-176E-441C-9851-1FE0F9682A12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{31656AC4-FE52-4BA6-85DA-27FD2BF8F08D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2141DB4C-7541-4EA8-A151-829EF507B5FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.Domain.Tests", "test\Skuo.IdentityServer.Domain.Tests\Skuo.IdentityServer.Domain.Tests.csproj", "{F7FEC227-F295-435D-9537-C2DA5CC35886}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.EntityFrameworkCore.Tests", "test\Skuo.IdentityServer.EntityFrameworkCore.Tests\Skuo.IdentityServer.EntityFrameworkCore.Tests.csproj", "{B068E3AB-4F4E-4E1E-B078-B2764490EDAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.TestBase", "test\Skuo.IdentityServer.TestBase\Skuo.IdentityServer.TestBase.csproj", "{82F84CD6-094A-43B8-ACF0-368AF029F965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.IdentityServer.MongoDB.Tests", "test\Skuo.IdentityServer.MongoDB.Tests\Skuo.IdentityServer.MongoDB.Tests.csproj", "{4989272C-A6F1-42A5-AF99-3A2C79B12BDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBD8D898-6BE5-4E97-AEB8-CEC76BE43343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBD8D898-6BE5-4E97-AEB8-CEC76BE43343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBD8D898-6BE5-4E97-AEB8-CEC76BE43343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBD8D898-6BE5-4E97-AEB8-CEC76BE43343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9342B4BE-FFE6-4B2E-8F5C-F55040C6F922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9342B4BE-FFE6-4B2E-8F5C-F55040C6F922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9342B4BE-FFE6-4B2E-8F5C-F55040C6F922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9342B4BE-FFE6-4B2E-8F5C-F55040C6F922}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FCA5C27-485C-4524-AB21-BDADF7505908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCA5C27-485C-4524-AB21-BDADF7505908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCA5C27-485C-4524-AB21-BDADF7505908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FCA5C27-485C-4524-AB21-BDADF7505908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9182D829-176E-441C-9851-1FE0F9682A12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9182D829-176E-441C-9851-1FE0F9682A12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9182D829-176E-441C-9851-1FE0F9682A12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9182D829-176E-441C-9851-1FE0F9682A12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7FEC227-F295-435D-9537-C2DA5CC35886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7FEC227-F295-435D-9537-C2DA5CC35886}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7FEC227-F295-435D-9537-C2DA5CC35886}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7FEC227-F295-435D-9537-C2DA5CC35886}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B068E3AB-4F4E-4E1E-B078-B2764490EDAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B068E3AB-4F4E-4E1E-B078-B2764490EDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B068E3AB-4F4E-4E1E-B078-B2764490EDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B068E3AB-4F4E-4E1E-B078-B2764490EDAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82F84CD6-094A-43B8-ACF0-368AF029F965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82F84CD6-094A-43B8-ACF0-368AF029F965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82F84CD6-094A-43B8-ACF0-368AF029F965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82F84CD6-094A-43B8-ACF0-368AF029F965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4989272C-A6F1-42A5-AF99-3A2C79B12BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4989272C-A6F1-42A5-AF99-3A2C79B12BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4989272C-A6F1-42A5-AF99-3A2C79B12BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4989272C-A6F1-42A5-AF99-3A2C79B12BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CBD8D898-6BE5-4E97-AEB8-CEC76BE43343} = {31656AC4-FE52-4BA6-85DA-27FD2BF8F08D}
+		{9342B4BE-FFE6-4B2E-8F5C-F55040C6F922} = {31656AC4-FE52-4BA6-85DA-27FD2BF8F08D}
+		{1FCA5C27-485C-4524-AB21-BDADF7505908} = {31656AC4-FE52-4BA6-85DA-27FD2BF8F08D}
+		{9182D829-176E-441C-9851-1FE0F9682A12} = {31656AC4-FE52-4BA6-85DA-27FD2BF8F08D}
+		{F7FEC227-F295-435D-9537-C2DA5CC35886} = {2141DB4C-7541-4EA8-A151-829EF507B5FC}
+		{B068E3AB-4F4E-4E1E-B078-B2764490EDAB} = {2141DB4C-7541-4EA8-A151-829EF507B5FC}
+		{82F84CD6-094A-43B8-ACF0-368AF029F965} = {2141DB4C-7541-4EA8-A151-829EF507B5FC}
+		{4989272C-A6F1-42A5-AF99-3A2C79B12BDE} = {2141DB4C-7541-4EA8-A151-829EF507B5FC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A36DDF8-8C3C-4BCE-9819-2E36407737D7}
+	EndGlobalSection
+EndGlobal

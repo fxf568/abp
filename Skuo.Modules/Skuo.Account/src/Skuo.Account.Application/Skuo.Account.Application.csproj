@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Skuo.Account</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.1" />
+    <ProjectReference Include="..\Skuo.Account.Application.Contracts\Skuo.Account.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Skuo.Identity\src\Skuo.Identity.Application\Skuo.Identity.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.UI.Navigation\Volo.Abp.UI.Navigation.csproj" />
+  </ItemGroup>
+</Project>

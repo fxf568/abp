@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Skuo.Identity</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Skuo.Identity.Domain\Skuo.Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Skuo.Users\src\Skuo.Users.MongoDB\Skuo.Users.MongoDB.csproj" />
+  </ItemGroup>
+</Project>

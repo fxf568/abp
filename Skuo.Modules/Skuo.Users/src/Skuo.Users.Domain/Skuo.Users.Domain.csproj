@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Skuo.Users</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Ddd.Domain\Volo.Abp.Ddd.Domain.csproj" />
+    <ProjectReference Include="..\Skuo.Users.Abstractions\Skuo.Users.Abstractions.csproj" />
+    <ProjectReference Include="..\Skuo.Users.Domain.Shared\Skuo.Users.Domain.Shared.csproj" />
+  </ItemGroup>
+</Project>
