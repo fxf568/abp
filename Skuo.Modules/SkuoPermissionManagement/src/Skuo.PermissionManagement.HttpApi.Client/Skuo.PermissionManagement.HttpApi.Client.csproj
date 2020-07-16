@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Skuo.PermissionManagement</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Skuo.PermissionManagement.Application.Contracts\Skuo.PermissionManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Http.Client\Volo.Abp.Http.Client.csproj" />
+  </ItemGroup>
+</Project>

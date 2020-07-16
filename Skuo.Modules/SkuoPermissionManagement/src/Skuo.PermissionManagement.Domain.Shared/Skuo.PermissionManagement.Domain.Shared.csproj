@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Skuo.PermissionManagement</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <content Remove="Volo\Abp\PermissionManagement\Localization\Domain\*.json" />
+    <EmbeddedResource Include="Volo\Abp\PermissionManagement\Localization\Domain\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Validation\Volo.Abp.Validation.csproj" />
+  </ItemGroup>
+</Project>

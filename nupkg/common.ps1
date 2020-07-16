@@ -19,7 +19,13 @@ $solutions = (
     "modules/tenant-management",
     "modules/users",
     "modules/virtual-file-explorer",
-	"modules/blob-storing-database"
+	"modules/blob-storing-database",
+	
+	"Skuo.Modules/Skuo.Account",
+	"Skuo.Modules/Skuo.Identity",
+	"Skuo.Modules/Skuo.IdentityServer",
+	"Skuo.Modules/Skuo.Users",
+	"Skuo.Modules/Skuo.Snowflake"
 )
 
 # List of projects
@@ -126,6 +132,14 @@ $projects = (
     "modules/account/src/Volo.Abp.Account.HttpApi",
     "modules/account/src/Volo.Abp.Account.Web",
     "modules/account/src/Volo.Abp.Account.Web.IdentityServer",
+	
+	# Skuo.Modules/Skuo.Account
+    "Skuo.Modules/Skuo.Account/src/Skuo.Account.Application.Contracts",
+    "Skuo.Modules/Skuo.Account/src/Skuo.Account.Application",
+    "Skuo.Modules/Skuo.Account/src/Skuo.Account.HttpApi.Client",
+    "Skuo.Modules/Skuo.Account/src/Skuo.Account.HttpApi",
+    "Skuo.Modules/Skuo.Account/src/Skuo.Account.Web",
+    "Skuo.Modules/Skuo.Account/src/Skuo.Account.Web.IdentityServer",
         
     # modules/audit-logging
     "modules/audit-logging/src/Volo.Abp.AuditLogging.Domain",
@@ -198,6 +212,19 @@ $projects = (
     "modules/identity/src/Volo.Abp.Identity.MongoDB",
     "modules/identity/src/Volo.Abp.Identity.Web",
     "modules/identity/src/Volo.Abp.PermissionManagement.Domain.Identity",
+	
+    # Skuo.Modules/Skuo.Identity
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.Application.Contracts",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.Application",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.AspNetCore",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.Domain",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.Domain.Shared",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.EntityFrameworkCore",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.HttpApi.Client",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.HttpApi",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.MongoDB",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.Identity.Web",
+    "Skuo.Modules/Skuo.Identity/src/Skuo.PermissionManagement.Domain.Identity",	
     
     # modules/identityserver
     "modules/identityserver/src/Volo.Abp.IdentityServer.Domain",
@@ -205,6 +232,14 @@ $projects = (
     "modules/identityserver/src/Volo.Abp.IdentityServer.EntityFrameworkCore",
     "modules/identityserver/src/Volo.Abp.IdentityServer.MongoDB",
     "modules/identityserver/src/Volo.Abp.PermissionManagement.Domain.IdentityServer",
+	
+	
+    # modules/identityserver
+    "Skuo.Modules/Skuo.IdentityServer/src/Skuo.IdentityServer.Domain",
+    "Skuo.Modules/Skuo.IdentityServer/src/Skuo.IdentityServer.Domain.Shared",
+    "Skuo.Modules/Skuo.IdentityServer/src/Skuo.IdentityServer.EntityFrameworkCore",
+    "Skuo.Modules/Skuo.IdentityServer/src/Skuo.IdentityServer.MongoDB",
+    "Skuo.Modules/Skuo.IdentityServer/src/Skuo.PermissionManagement.Domain.IdentityServer",	
 
     # modules/permission-management
     "modules/permission-management/src/Volo.Abp.PermissionManagement.Application.Contracts",
@@ -241,6 +276,13 @@ $projects = (
     "modules/users/src/Volo.Abp.Users.Domain.Shared",
     "modules/users/src/Volo.Abp.Users.EntityFrameworkCore",
     "modules/users/src/Volo.Abp.Users.MongoDB",
+	
+    # Skuo.Modules/Skuo.Users
+    "Skuo.Modules/Skuo.Users/src/Skuo.Users.Abstractions",
+    "Skuo.Modules/Skuo.Users/src/Skuo.Users.Domain",
+    "Skuo.Modules/Skuo.Users/src/Skuo.Users.Domain.Shared",
+    "Skuo.Modules/Skuo.Users/src/Skuo.Users.EntityFrameworkCore",
+    "Skuo.Modules/Skuo.Users/src/Skuo.Users.MongoDB",	
 
     # modules/virtual-file-explorer
     "modules/virtual-file-explorer/src/Volo.Abp.VirtualFileExplorer.Web",

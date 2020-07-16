@@ -1,0 +1,123 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skuo.PermissionManagement.Web", "src\Skuo.PermissionManagement\Skuo.PermissionManagement.Web.csproj", "{8CA82F3E-FAC0-4E3C-BCA2-A0F10D658DF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4297F91E-A435-423E-BA2C-4FEEECD4CD29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.Application", "src\Skuo.PermissionManagement.Application\Skuo.PermissionManagement.Application.csproj", "{9C013B3D-089B-4115-AD10-3C4889BE7B2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.Application.Contracts", "src\Skuo.PermissionManagement.Application.Contracts\Skuo.PermissionManagement.Application.Contracts.csproj", "{48AE02DD-0C72-4A4C-8920-0144B50C245F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.Domain.Shared", "src\Skuo.PermissionManagement.Domain.Shared\Skuo.PermissionManagement.Domain.Shared.csproj", "{DBD20CBD-8734-42E0-AB08-88F96FA697ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.EntityFrameworkCore", "src\Skuo.PermissionManagement.EntityFrameworkCore\Skuo.PermissionManagement.EntityFrameworkCore.csproj", "{C9230AE6-08D5-49DB-8982-2D1682A2E0CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.HttpApi", "src\Skuo.PermissionManagement.HttpApi\Skuo.PermissionManagement.HttpApi.csproj", "{95BC4ED6-F1C9-4B03-8055-1B944CFAD237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.HttpApi.Client", "src\Skuo.PermissionManagement.HttpApi.Client\Skuo.PermissionManagement.HttpApi.Client.csproj", "{7DB4B7C6-55CD-4207-A795-953B108EBF41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.MongoDB", "src\Skuo.PermissionManagement.MongoDB\Skuo.PermissionManagement.MongoDB.csproj", "{58D42D89-1B9A-4152-A748-1EF19D036EBA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skuo.PermissionManagement.Domain", "src\Skuo.PermissionManagement.Domain\Skuo.PermissionManagement.Domain.csproj", "{48E85A70-67B4-4BF6-846F-8402F389BDF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{ADE975E9-F388-45DF-BE4D-0273A924A510}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.TestBase", "test\Skuo.PermissionManagement.TestBase\Skuo.PermissionManagement.TestBase.csproj", "{56B0B3AF-1C90-4DC5-B537-C9493CD3C04B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.MongoDB.Tests", "test\Skuo.PermissionManagement.MongoDB.Tests\Skuo.PermissionManagement.MongoDB.Tests.csproj", "{85379BE4-7154-4B38-8F49-0560983330C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.EntityFrameworkCore.Tests", "test\Skuo.PermissionManagement.EntityFrameworkCore.Tests\Skuo.PermissionManagement.EntityFrameworkCore.Tests.csproj", "{8FE7902F-5502-4D52-98A5-DEE0B911BAA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.Domain.Tests", "test\Skuo.PermissionManagement.Domain.Tests\Skuo.PermissionManagement.Domain.Tests.csproj", "{DBB201AD-A7C2-42D0-B8B4-6FC2721ED2DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skuo.PermissionManagement.Application.Tests", "test\Skuo.PermissionManagement.Application.Tests\Skuo.PermissionManagement.Application.Tests.csproj", "{577FCFF4-680A-44AD-980F-F4D7619E5922}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CA82F3E-FAC0-4E3C-BCA2-A0F10D658DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA82F3E-FAC0-4E3C-BCA2-A0F10D658DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA82F3E-FAC0-4E3C-BCA2-A0F10D658DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA82F3E-FAC0-4E3C-BCA2-A0F10D658DF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C013B3D-089B-4115-AD10-3C4889BE7B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C013B3D-089B-4115-AD10-3C4889BE7B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C013B3D-089B-4115-AD10-3C4889BE7B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C013B3D-089B-4115-AD10-3C4889BE7B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48AE02DD-0C72-4A4C-8920-0144B50C245F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48AE02DD-0C72-4A4C-8920-0144B50C245F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48AE02DD-0C72-4A4C-8920-0144B50C245F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48AE02DD-0C72-4A4C-8920-0144B50C245F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBD20CBD-8734-42E0-AB08-88F96FA697ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD20CBD-8734-42E0-AB08-88F96FA697ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD20CBD-8734-42E0-AB08-88F96FA697ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD20CBD-8734-42E0-AB08-88F96FA697ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9230AE6-08D5-49DB-8982-2D1682A2E0CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9230AE6-08D5-49DB-8982-2D1682A2E0CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9230AE6-08D5-49DB-8982-2D1682A2E0CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9230AE6-08D5-49DB-8982-2D1682A2E0CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95BC4ED6-F1C9-4B03-8055-1B944CFAD237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95BC4ED6-F1C9-4B03-8055-1B944CFAD237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95BC4ED6-F1C9-4B03-8055-1B944CFAD237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95BC4ED6-F1C9-4B03-8055-1B944CFAD237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB4B7C6-55CD-4207-A795-953B108EBF41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DB4B7C6-55CD-4207-A795-953B108EBF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DB4B7C6-55CD-4207-A795-953B108EBF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DB4B7C6-55CD-4207-A795-953B108EBF41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58D42D89-1B9A-4152-A748-1EF19D036EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58D42D89-1B9A-4152-A748-1EF19D036EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58D42D89-1B9A-4152-A748-1EF19D036EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58D42D89-1B9A-4152-A748-1EF19D036EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48E85A70-67B4-4BF6-846F-8402F389BDF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48E85A70-67B4-4BF6-846F-8402F389BDF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48E85A70-67B4-4BF6-846F-8402F389BDF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48E85A70-67B4-4BF6-846F-8402F389BDF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56B0B3AF-1C90-4DC5-B537-C9493CD3C04B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56B0B3AF-1C90-4DC5-B537-C9493CD3C04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56B0B3AF-1C90-4DC5-B537-C9493CD3C04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56B0B3AF-1C90-4DC5-B537-C9493CD3C04B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85379BE4-7154-4B38-8F49-0560983330C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85379BE4-7154-4B38-8F49-0560983330C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85379BE4-7154-4B38-8F49-0560983330C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85379BE4-7154-4B38-8F49-0560983330C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FE7902F-5502-4D52-98A5-DEE0B911BAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FE7902F-5502-4D52-98A5-DEE0B911BAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FE7902F-5502-4D52-98A5-DEE0B911BAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FE7902F-5502-4D52-98A5-DEE0B911BAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB201AD-A7C2-42D0-B8B4-6FC2721ED2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB201AD-A7C2-42D0-B8B4-6FC2721ED2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB201AD-A7C2-42D0-B8B4-6FC2721ED2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB201AD-A7C2-42D0-B8B4-6FC2721ED2DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{577FCFF4-680A-44AD-980F-F4D7619E5922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{577FCFF4-680A-44AD-980F-F4D7619E5922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{577FCFF4-680A-44AD-980F-F4D7619E5922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{577FCFF4-680A-44AD-980F-F4D7619E5922}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8CA82F3E-FAC0-4E3C-BCA2-A0F10D658DF4} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{9C013B3D-089B-4115-AD10-3C4889BE7B2B} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{48AE02DD-0C72-4A4C-8920-0144B50C245F} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{DBD20CBD-8734-42E0-AB08-88F96FA697ED} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{C9230AE6-08D5-49DB-8982-2D1682A2E0CB} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{95BC4ED6-F1C9-4B03-8055-1B944CFAD237} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{7DB4B7C6-55CD-4207-A795-953B108EBF41} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{58D42D89-1B9A-4152-A748-1EF19D036EBA} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{48E85A70-67B4-4BF6-846F-8402F389BDF8} = {4297F91E-A435-423E-BA2C-4FEEECD4CD29}
+		{56B0B3AF-1C90-4DC5-B537-C9493CD3C04B} = {ADE975E9-F388-45DF-BE4D-0273A924A510}
+		{85379BE4-7154-4B38-8F49-0560983330C0} = {ADE975E9-F388-45DF-BE4D-0273A924A510}
+		{8FE7902F-5502-4D52-98A5-DEE0B911BAA0} = {ADE975E9-F388-45DF-BE4D-0273A924A510}
+		{DBB201AD-A7C2-42D0-B8B4-6FC2721ED2DD} = {ADE975E9-F388-45DF-BE4D-0273A924A510}
+		{577FCFF4-680A-44AD-980F-F4D7619E5922} = {ADE975E9-F388-45DF-BE4D-0273A924A510}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {668ADC3E-9957-4027-AA8B-9A5B1617C225}
+	EndGlobalSection
+EndGlobal

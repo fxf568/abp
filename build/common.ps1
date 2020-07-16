@@ -22,6 +22,13 @@ $solutionPaths = (
     "../modules/virtual-file-explorer",
     "../templates/module/aspnet-core",
     "../templates/app/aspnet-core",
+	
+	"../Skuo.Modules/Skuo.Users",
+	"../Skuo.Modules/Skuo.Account",
+	"../Skuo.Modules/Skuo.Identity",
+	"../Skuo.Modules/Skuo.IdentityServer",
+	"../Skuo.Modules/Skuo.Snowflake",
+	
     "../samples/MicroserviceDemo",
     "../abp_io/AbpIoLocalization"
 )
