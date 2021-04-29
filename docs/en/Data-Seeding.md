@@ -38,31 +38,37 @@ namespace Acme.BookStore
     {
         private readonly IRepository<Book, Guid> _bookRepository;
         private readonly IGuidGenerator _guidGenerator;
+        private readonly ICurrentTenant _currentTenant;
 
         public BookStoreDataSeedContributor(
             IRepository<Book, Guid> bookRepository,
-            IGuidGenerator guidGenerator)
+            IGuidGenerator guidGenerator,
+            ICurrentTenant currentTenant)
         {
             _bookRepository = bookRepository;
             _guidGenerator = guidGenerator;
+            _currentTenant = currentTenant;
         }
         
         public async Task SeedAsync(DataSeedContext context)
         {
-            if (await _bookRepository.GetCountAsync() > 0)
+            using (_currentTenant.Change(context?.TenantId))
             {
-                return;
-            }
-            
-            var book = new Book(
-                id: _guidGenerator.Create(),
-                name: "The Hitchhiker's Guide to the Galaxy",
-                type: BookType.ScienceFiction,
-                publishDate: new DateTime(1979, 10, 12),
-                price: 42
-            );
+                if (await _bookRepository.GetCountAsync() > 0)
+                {
+                    return;
+                }
 
-            await _bookRepository.InsertAsync(book);
+                var book = new Book(
+                    id: _guidGenerator.Create(),
+                    name: "The Hitchhiker's Guide to the Galaxy",
+                    type: BookType.ScienceFiction,
+                    publishDate: new DateTime(1979, 10, 12),
+                    price: 42
+                );
+
+                await _bookRepository.InsertAsync(book);
+            }
         }
     }
 }
@@ -70,7 +76,7 @@ namespace Acme.BookStore
 
 * `IDataSeedContributor` defines the `SeedAsync` method to execute the **data seed logic**.
 * It is typical to **check database** if the seeding data is already present.
-* You can **inject** and service and perform any logic needed to seed the data.
+* You can **inject** service and perform any logic needed to seed the data.
 
 > Data seed contributors are automatically discovered by the ABP Framework and executed as a part of the data seed process.
 

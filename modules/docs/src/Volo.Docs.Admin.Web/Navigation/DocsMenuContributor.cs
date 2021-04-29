@@ -13,25 +13,24 @@ namespace Volo.Docs.Admin.Navigation
         {
             if (context.Menu.Name == StandardMenus.Main)
             {
-                await ConfigureMainMenu(context);
+                await ConfigureMainMenuAsync(context);
             }
         }
 
-        private async Task ConfigureMainMenu(MenuConfigurationContext context)
+        private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
         {
             var administrationMenu = context.Menu.GetAdministration();
 
             var l = context.GetLocalizer<DocsResource>();
 
-            var rootMenuItem = new ApplicationMenuItem(DocsMenuNames.GroupName, l["Menu:DocumentManagement"], icon: "fa fa-book");
+            var rootMenuItem = new ApplicationMenuItem(DocsMenuNames.GroupName, l["Menu:Documents"], icon: "fa fa-book");
 
             administrationMenu.AddItem(rootMenuItem);
 
-            if (await context.IsGrantedAsync(DocsAdminPermissions.Projects.Default))
-            {
-                rootMenuItem.AddItem(new ApplicationMenuItem(DocsMenuNames.Projects, l["Menu:ProjectManagement"], "~/Docs/Admin/Projects"));
-            }
+            rootMenuItem.AddItem(new ApplicationMenuItem(DocsMenuNames.Projects, l["Menu:ProjectManagement"], "~/Docs/Admin/Projects", requiredPermissionName: DocsAdminPermissions.Projects.Default));
+            rootMenuItem.AddItem(new ApplicationMenuItem(DocsMenuNames.Documents, l["Menu:DocumentManagement"], "~/Docs/Admin/Documents", requiredPermissionName: DocsAdminPermissions.Documents.Default));
 
+            return Task.CompletedTask;
         }
     }
 }

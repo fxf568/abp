@@ -1,6 +1,6 @@
-# Querying Lists Easily with ListService
+# Working with Lists
 
-`ListService` is a utility service to provide an easy pagination, sorting, and search implementation.
+`ListService` is a utility service to provide easy pagination, sorting, and search implementation.
 
 
 
@@ -35,7 +35,10 @@ class BookComponent {
   constructor(
     public readonly list: ListService,
     private bookService: BookService,
-  ) {}
+  ) {
+    // change ListService defaults here
+    this.list.maxResultCount = 20;
+  }
 
   ngOnInit() {
     // A function that gets query and returns an observable
@@ -53,59 +56,85 @@ class BookComponent {
 }
 ```
 
-> Noticed `list` is `public` and `readonly`? That is because we will use `ListService` properties directly in the component's template. That may be considered as an anti-pattern, but it is much quicker to implement. You can always use public component properties instead.
+> Noticed `list` is `public` and `readonly`? That is because we will use `ListService` directly in the component's template. That may be considered as an anti-pattern, but it is much quicker to implement. You can always use public component members to expose the `ListService` instance instead.
 
-Place `ListService` properties into the template like this:
+Bind `ListService` to ngx-datatable like this:
 
 ```html
-<abp-table
-  [value]="book.items"
-  [(page)]="list.page"
-  [rows]="list.maxResultCount"
-  [totalRecords]="book.totalCount"
-  [headerTemplate]="tableHeader"
-  [bodyTemplate]="tableBody"
-  [abpLoading]="list.isLoading$ | async"
+<ngx-datatable
+  [rows]="items"
+  [count]="count"
+  [list]="list"
+  default
 >
-</abp-table>
-
-<ng-template #tableHeader>
-  <tr>
-    <th (click)="nameSort.sort('name')">
-      {%{{{ '::Name' | abpLocalization }}}%}
-      <abp-sort-order-icon
-        #nameSort
-        sortKey="name"
-        [(selectedSortKey)]="list.sortKey"
-        [(order)]="list.sortOrder"
-      ></abp-sort-order-icon>
-    </th>
-  </tr>
-</ng-template>
-
-<ng-template #tableBody let-data>
-  <tr>
-    <td>{%{{{ data.name }}}%}</td>
-  </tr>
-</ng-template>
+  <!-- column templates here -->
+</ngx-datatable>
 ```
+
+## Extending query with custom variables
+
+You can extend the query parameter of the `ListService`'s `hookToQuery` method.
+
+Firstly, you should pass your own type to `ListService` as shown below:
+
+```typescript
+constructor(public readonly list: ListService<BooksSearchParamsDto>) { }
+```
+
+Then update the `bookStreamCreator` constant like following:
+
+```typescript
+const bookStreamCreator = (query) => this.bookService.getList({...query, name: 'name here'});
+```
+
+You can also create your params object.
+
+Define a variable like this:
+
+```typescript
+booksSearchParams = {} as BooksSearchParamsDto;
+```
+
+Update the `bookStreamCreator` constant:
+
+```typescript
+const bookStreamCreator = (query) => this.bookService.getList({...query, ...this.booksSearchParams});
+```
+
+Then you can place inputs to the HTML:
+
+```html
+<div class="form-group">
+  <input
+    class="form control"
+    placeholder="Name"
+    (keyup.enter)="list.get()"
+    [(ngModel)]="booksSearchParams.name"
+  />
+</div>
+```
+
+`ListService` emits the hookToQuery stream when you call the `this.list.get()` method.
 
 ## Usage with Observables
 
 You may use observables in combination with [AsyncPipe](https://angular.io/guide/observables-in-angular#async-pipe) of Angular instead. Here are some possibilities:
 
-```ts
+```js
   book$ = this.list.hookToQuery(query => this.bookService.getListByInput(query));
 ```
 
 ```html
 <!-- simplified representation of the template -->
 
-<abp-table
-  [value]="(book$ | async)?.items || []"
-  [totalRecords]="(book$ | async)?.totalCount"
+<ngx-datatable
+  [rows]="(book$ | async)?.items || []"
+  [count]="(book$ | async)?.totalCount || 0"
+  [list]="list"
+  default
 >
-</abp-table>
+  <!-- column templates here -->
+</ngx-datatable>
 
 <!-- DO NOT WORRY, ONLY ONE REQUEST WILL BE MADE -->
 ```
@@ -113,7 +142,7 @@ You may use observables in combination with [AsyncPipe](https://angular.io/guide
 ...or...
 
 
-```ts
+```js
   @Select(BookState.getBooks)
   books$: Observable<BookDto[]>;
 
@@ -128,31 +157,40 @@ You may use observables in combination with [AsyncPipe](https://angular.io/guide
 ```html
 <!-- simplified representation of the template -->
 
-<abp-table
-  [value]="books$ | async"
-  [totalRecords]="bookCount$ | async"
+<ngx-datatable
+  [rows]="(books$ | async) || []"
+  [count]="(bookCount$ | async) || 0"
+  [list]="list"
+  default
 >
-</abp-table>
+  <!-- column templates here -->
+</ngx-datatable>
 ```
+
+> We do not recommend using the NGXS store for CRUD pages unless your application needs to share list information between components or use it later on in another page.
+
 
 ## How to Refresh Table on Create/Update/Delete
 
 `ListService` exposes a `get` method to trigger a request with the current query. So, basically, whenever a create, update, or delete action resolves, you can call `this.list.get();` and it will call hooked stream creator again.
 
-```ts
-this.store.dispatch(new DeleteBook(id)).subscribe(this.list.get);
+```js
+  this.bookService.createByInput(form.value)
+    .subscribe(() => {
+      this.list.get();
+
+      // Other subscription logic here
+    });
 ```
 
 ...or...
 
-```ts
-this.bookService.createByInput(form.value)
-  .subscribe(() => {
-    this.list.get();
-
-    // Other subscription logic here
-  })
+```js
+  this.store.dispatch(new DeleteBook(id)).subscribe(this.list.get);
 ```
+
+> We do not recommend using the NGXS store for CRUD pages unless your application needs to share list information between components or use it later on in another page.
+
 
 ## How to Implement Server-Side Search in a Table
 
@@ -163,3 +201,26 @@ this.bookService.createByInput(form.value)
 
 <input type="text" name="search" [(ngModel)]="list.filter">
 ```
+
+## Breaking Change with ABP v3.0
+
+We had to modify the `ListService` to make it work with `ngx-datatable`. Previously, the minimum value for `page` property was `1` and you could use it like this:
+
+```html
+<!-- other bindings are hidden in favor of brevity -->
+<abp-table
+  [(page)]="list.page"
+></abp-table>
+```
+
+As of v3.0, with ngx-datatable, the `page` property has to be set as `0` for the initial page. Therefore, if you used `ListService` on your tables before and are going to keep `abp-table`, you need to make the following change:
+
+```html
+<!-- other bindings are hidden in favor of brevity -->
+<abp-table
+  [page]="list.page + 1"
+  (pageChange)="list.page = $event - 1"
+></abp-table>
+```
+
+**Important Note:** The `abp-table` is not removed, but is deprecated and will be removed in the future. Please consider switching to ngx-datatable.

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Quartz;
 using Volo.Abp.DependencyInjection;
@@ -18,14 +19,17 @@ namespace Volo.Abp.BackgroundWorkers.Quartz
 
         public virtual async Task StartAsync(CancellationToken cancellationToken = default)
         {
-            await _scheduler.ResumeAll(cancellationToken);
+            if (_scheduler.IsStarted && _scheduler.InStandbyMode)
+            {
+                await _scheduler.Start(cancellationToken);
+            }
         }
 
         public virtual async Task StopAsync(CancellationToken cancellationToken = default)
         {
-            if (!_scheduler.IsShutdown)
+            if (_scheduler.IsStarted && !_scheduler.InStandbyMode)
             {
-                await _scheduler.PauseAll(cancellationToken);
+                await _scheduler.Standby(cancellationToken);
             }
         }
 
@@ -48,6 +52,19 @@ namespace Volo.Abp.BackgroundWorkers.Quartz
                 else
                 {
                     await DefaultScheduleJobAsync(quartzWork);
+                }
+            }
+            else
+            {
+                var adapterType = typeof(QuartzPeriodicBackgroundWorkerAdapter<>).MakeGenericType(worker.GetType());
+
+                var workerAdapter = Activator.CreateInstance(adapterType) as IQuartzBackgroundWorkerAdapter;
+
+                workerAdapter?.BuildWorker(worker);
+
+                if (workerAdapter?.Trigger != null)
+                {
+                    await DefaultScheduleJobAsync(workerAdapter);
                 }
             }
         }

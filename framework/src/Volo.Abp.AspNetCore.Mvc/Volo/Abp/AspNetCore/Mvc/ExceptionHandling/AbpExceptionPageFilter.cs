@@ -1,12 +1,13 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Volo.Abp.AspNetCore.ExceptionHandling;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.ExceptionHandling;
@@ -17,24 +18,6 @@ namespace Volo.Abp.AspNetCore.Mvc.ExceptionHandling
 {
     public class AbpExceptionPageFilter : IAsyncPageFilter, ITransientDependency
     {
-        public ILogger<AbpExceptionPageFilter> Logger { get; set; }
-
-        private readonly IExceptionToErrorInfoConverter _errorInfoConverter;
-        private readonly IHttpExceptionStatusCodeFinder _statusCodeFinder;
-        private readonly IJsonSerializer _jsonSerializer;
-
-        public AbpExceptionPageFilter(
-            IExceptionToErrorInfoConverter errorInfoConverter,
-            IHttpExceptionStatusCodeFinder statusCodeFinder,
-            IJsonSerializer jsonSerializer)
-        {
-            _errorInfoConverter = errorInfoConverter;
-            _statusCodeFinder = statusCodeFinder;
-            _jsonSerializer = jsonSerializer;
-
-            Logger = NullLogger<AbpExceptionPageFilter>.Instance;
-        }
-
         public Task OnPageHandlerSelectionAsync(PageHandlerSelectedContext context)
         {
             return Task.CompletedTask;
@@ -85,24 +68,28 @@ namespace Volo.Abp.AspNetCore.Mvc.ExceptionHandling
             //TODO: Trigger an AbpExceptionHandled event or something like that.
 
             context.HttpContext.Response.Headers.Add(AbpHttpConsts.AbpErrorFormat, "true");
-            context.HttpContext.Response.StatusCode = (int)_statusCodeFinder.GetStatusCode(context.HttpContext, context.Exception);
+            context.HttpContext.Response.StatusCode = (int) context
+                .GetRequiredService<IHttpExceptionStatusCodeFinder>()
+                .GetStatusCode(context.HttpContext, context.Exception);
 
-            var remoteServiceErrorInfo = _errorInfoConverter.Convert(context.Exception);
+            var exceptionHandlingOptions = context.GetRequiredService<IOptions<AbpExceptionHandlingOptions>>().Value;
+            var exceptionToErrorInfoConverter = context.GetRequiredService<IExceptionToErrorInfoConverter>();
+            var remoteServiceErrorInfo  = exceptionToErrorInfoConverter.Convert(context.Exception, exceptionHandlingOptions.SendExceptionsDetailsToClients);
 
             context.Result = new ObjectResult(new RemoteServiceErrorResponse(remoteServiceErrorInfo));
 
             var logLevel = context.Exception.GetLogLevel();
 
-            Logger.LogWithLevel(logLevel, $"---------- {nameof(RemoteServiceErrorInfo)} ----------");
-            Logger.LogWithLevel(logLevel, _jsonSerializer.Serialize(remoteServiceErrorInfo, indented: true));
-            Logger.LogException(context.Exception, logLevel);
+            var remoteServiceErrorInfoBuilder = new StringBuilder();
+            remoteServiceErrorInfoBuilder.AppendLine($"---------- {nameof(RemoteServiceErrorInfo)} ----------");
+            remoteServiceErrorInfoBuilder.AppendLine(context.GetRequiredService<IJsonSerializer>().Serialize(remoteServiceErrorInfo, indented: true));
 
-            await context.HttpContext
-                .RequestServices
-                .GetRequiredService<IExceptionNotifier>()
-                .NotifyAsync(
-                    new ExceptionNotificationContext(context.Exception)
-                );
+            var logger = context.GetService<ILogger<AbpExceptionFilter>>(NullLogger<AbpExceptionFilter>.Instance);
+            logger.LogWithLevel(logLevel, remoteServiceErrorInfoBuilder.ToString());
+
+            logger.LogException(context.Exception, logLevel);
+
+            await context.GetRequiredService<IExceptionNotifier>().NotifyAsync(new ExceptionNotificationContext(context.Exception));
 
             context.Exception = null; //Handled!
         }

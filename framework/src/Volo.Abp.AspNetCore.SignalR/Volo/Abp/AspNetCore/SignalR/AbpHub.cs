@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.Localization;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.Timing;
@@ -14,50 +14,26 @@ namespace Volo.Abp.AspNetCore.SignalR
 {
     public abstract class AbpHub : Hub
     {
+        public IAbpLazyServiceProvider LazyServiceProvider { get; set; }
+
+        [Obsolete("Use LazyServiceProvider instead.")]
         public IServiceProvider ServiceProvider { get; set; }
-        protected readonly object ServiceProviderLock = new object();
 
-        protected TService LazyGetRequiredService<TService>(ref TService reference)
-            => LazyGetRequiredService(typeof(TService), ref reference);
+        protected ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetService<ILoggerFactory>();
 
-        protected TRef LazyGetRequiredService<TRef>(Type serviceType, ref TRef reference)
-        {
-            if (reference == null)
-            {
-                lock (ServiceProviderLock)
-                {
-                    if (reference == null)
-                    {
-                        reference = (TRef)ServiceProvider.GetRequiredService(serviceType);
-                    }
-                }
-            }
+        protected ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
 
-            return reference;
-        }
+        protected ICurrentUser CurrentUser => LazyServiceProvider.LazyGetService<ICurrentUser>();
 
-        public ILoggerFactory LoggerFactory => LazyGetRequiredService(ref _loggerFactory);
-        private ILoggerFactory _loggerFactory;
+        protected ICurrentTenant CurrentTenant => LazyServiceProvider.LazyGetService<ICurrentTenant>();
 
-        protected ILogger Logger => _lazyLogger.Value;
-        private Lazy<ILogger> _lazyLogger => new Lazy<ILogger>(() => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance, true);
+        protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetService<IAuthorizationService>();
 
-        public ICurrentUser CurrentUser => LazyGetRequiredService(ref _currentUser);
-        private ICurrentUser _currentUser;
+        protected IClock Clock => LazyServiceProvider.LazyGetService<IClock>();
 
-        public ICurrentTenant CurrentTenant => LazyGetRequiredService(ref _currentTenant);
-        private ICurrentTenant _currentTenant;
+        protected IStringLocalizerFactory StringLocalizerFactory => LazyServiceProvider.LazyGetService<IStringLocalizerFactory>();
 
-        public IAuthorizationService AuthorizationService => LazyGetRequiredService(ref _authorizationService);
-        private IAuthorizationService _authorizationService;
-
-        public IClock Clock => LazyGetRequiredService(ref _clock);
-        private IClock _clock;
-
-        public IStringLocalizerFactory StringLocalizerFactory => LazyGetRequiredService(ref _stringLocalizerFactory);
-        private IStringLocalizerFactory _stringLocalizerFactory;
-
-        public IStringLocalizer L
+        protected IStringLocalizer L
         {
             get
             {
@@ -99,53 +75,28 @@ namespace Volo.Abp.AspNetCore.SignalR
         }
     }
 
-    public abstract class AbpHub<T> : Hub<T> 
+    public abstract class AbpHub<T> : Hub<T>
         where T : class
     {
+        public IAbpLazyServiceProvider LazyServiceProvider { get; set; }
+
         public IServiceProvider ServiceProvider { get; set; }
-        protected readonly object ServiceProviderLock = new object();
 
-        protected TService LazyGetRequiredService<TService>(ref TService reference)
-            => LazyGetRequiredService(typeof(TService), ref reference);
+        protected ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetService<ILoggerFactory>();
 
-        protected TRef LazyGetRequiredService<TRef>(Type serviceType, ref TRef reference)
-        {
-            if (reference == null)
-            {
-                lock (ServiceProviderLock)
-                {
-                    if (reference == null)
-                    {
-                        reference = (TRef)ServiceProvider.GetRequiredService(serviceType);
-                    }
-                }
-            }
+        protected ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
 
-            return reference;
-        }
+        protected ICurrentUser CurrentUser => LazyServiceProvider.LazyGetService<ICurrentUser>();
 
-        public ILoggerFactory LoggerFactory => LazyGetRequiredService(ref _loggerFactory);
-        private ILoggerFactory _loggerFactory;
+        protected ICurrentTenant CurrentTenant => LazyServiceProvider.LazyGetService<ICurrentTenant>();
 
-        protected ILogger Logger => _lazyLogger.Value;
-        private Lazy<ILogger> _lazyLogger => new Lazy<ILogger>(() => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance, true);
+        protected IAuthorizationService AuthorizationService => LazyServiceProvider.LazyGetService<IAuthorizationService>();
 
-        public ICurrentUser CurrentUser => LazyGetRequiredService(ref _currentUser);
-        private ICurrentUser _currentUser;
+        protected IClock Clock => LazyServiceProvider.LazyGetService<IClock>();
 
-        public ICurrentTenant CurrentTenant => LazyGetRequiredService(ref _currentTenant);
-        private ICurrentTenant _currentTenant;
+        protected IStringLocalizerFactory StringLocalizerFactory => LazyServiceProvider.LazyGetService<IStringLocalizerFactory>();
 
-        public IAuthorizationService AuthorizationService => LazyGetRequiredService(ref _authorizationService);
-        private IAuthorizationService _authorizationService;
-
-        public IClock Clock => LazyGetRequiredService(ref _clock);
-        private IClock _clock;
-
-        public IStringLocalizerFactory StringLocalizerFactory => LazyGetRequiredService(ref _stringLocalizerFactory);
-        private IStringLocalizerFactory _stringLocalizerFactory;
-
-        public IStringLocalizer L
+        protected IStringLocalizer L
         {
             get
             {

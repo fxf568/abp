@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
 using Volo.Abp.Localization;
+using Volo.Abp.ObjectExtending.Modularity;
 using Volo.Abp.Reflection;
 
 namespace Volo.Abp.ObjectExtending
@@ -17,10 +17,6 @@ namespace Volo.Abp.ObjectExtending
 
         [NotNull]
         public Type Type { get; }
-
-        [NotNull]
-        [Obsolete("Add validation attributes to the Attributes list instead! ValidationAttributes property will be removed in future versions.")]
-        public List<ValidationAttribute> ValidationAttributes { get; }
 
         [NotNull]
         public List<Attribute> Attributes { get; }
@@ -61,6 +57,9 @@ namespace Volo.Abp.ObjectExtending
         [CanBeNull]
         public Func<object> DefaultValueFactory { get; set; }
 
+        [NotNull]
+        public ExtensionPropertyLookupConfiguration Lookup { get; set; }
+
         public ObjectExtensionPropertyInfo(
             [NotNull] ObjectExtensionInfo objectExtension,
             [NotNull] Type type,
@@ -71,12 +70,12 @@ namespace Volo.Abp.ObjectExtending
             Name = Check.NotNull(name, nameof(name));
 
             Configuration = new Dictionary<object, object>();
-            ValidationAttributes = new List<ValidationAttribute>();
             Attributes = new List<Attribute>();
             Validators = new List<Action<ObjectExtensionPropertyValidationContext>>();
 
             Attributes.AddRange(ExtensionPropertyHelper.GetDefaultAttributes(Type));
             DefaultValue = TypeHelper.GetDefaultValue(Type);
+            Lookup = new ExtensionPropertyLookupConfiguration();
         }
 
         public object GetDefaultValue()

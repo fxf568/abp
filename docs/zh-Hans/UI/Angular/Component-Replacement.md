@@ -11,25 +11,24 @@
 然后打开 `app.component.ts` 使用 `AddReplaceableComponent` 将你的组件替换ABP组件. 如下所示:
 
 ```js
-import { ..., AddReplaceableComponent } from '@abp/ng.core'; // imported AddReplaceableComponent action
+import { AddReplaceableComponent } from '@abp/ng.core'; // imported AddReplaceableComponent action
 import { eIdentityComponents } from '@abp/ng.identity'; // imported eIdentityComponents enum
 import { Store } from '@ngxs/store'; // imported Store
 //...
 
 @Component(/* component metadata */)
-export class AppComponent implements OnInit {
-  constructor(..., private store: Store) {} // injected Store
-
-  ngOnInit() {
-    // added dispatch
+export class AppComponent {
+  constructor(
+    private store: Store // injected Store
+  )
+  {
+    // dispatched the AddReplaceableComponent action
     this.store.dispatch(
       new AddReplaceableComponent({
         component: YourNewRoleComponent,
         key: eIdentityComponents.Roles,
       }),
     );
-
-    //...
   }
 }
 ```
@@ -47,12 +46,10 @@ export class AppComponent implements OnInit {
 运行以下命令在 `angular` 文件夹中生成布局:
 
 ```bash
-yarn ng generate component shared/my-application-layout --export --entryComponent
-
-# You don't need the --entryComponent option in Angular 9
+yarn ng generate component my-application-layout
 ```
 
-在你的布局模板(`my-layout.component.html`)中添加以下代码:
+在你的布局模板(`my-application-layout.component.html`)中添加以下代码:
 
 ```html
 <router-outlet></router-outlet>
@@ -61,26 +58,23 @@ yarn ng generate component shared/my-application-layout --export --entryComponen
 打开 `src/app` 文件夹下的 `app.component.ts` 文件添加以下内容:
 
 ```js
-import { ..., AddReplaceableComponent } from '@abp/ng.core'; // imported AddReplaceableComponent
+import { AddReplaceableComponent } from '@abp/ng.core'; // imported AddReplaceableComponent
 import { eThemeBasicComponents } from '@abp/ng.theme.basic'; // imported eThemeBasicComponents enum for component keys
-import { MyApplicationLayoutComponent } from './shared/my-application-layout/my-application-layout.component'; // imported MyApplicationLayoutComponent
 import { Store } from '@ngxs/store'; // imported Store
-//...
+import { MyApplicationLayoutComponent } from './my-application-layout/my-application-layout.component'; // imported MyApplicationLayoutComponent
 
 @Component(/* component metadata */)
-export class AppComponent implements OnInit {
-  constructor(..., private store: Store) {} // injected Store
-
-  ngOnInit() {
-    // added dispatch
+export class AppComponent {
+  constructor(
+    private store: Store, // injected Store
+  ) {
+    // dispatched the AddReplaceableComponent action
     this.store.dispatch(
       new AddReplaceableComponent({
         component: MyApplicationLayoutComponent,
         key: eThemeBasicComponents.ApplicationLayout,
       }),
     );
-
-    //...
   }
 }
 ```
@@ -542,6 +536,10 @@ export class AppComponent implements OnInit {
 最终UI如下:
 
 ![New nav-items](./images/replaced-nav-items-component.png)
+
+## 另请参阅
+
+- [如何替换PermissionManagementComponent](./Permission-Management-Component-Replacement.md)
 
 ## 下一步是什么?
 

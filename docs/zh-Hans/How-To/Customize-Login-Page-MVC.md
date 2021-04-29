@@ -35,7 +35,6 @@ public class CustomLoginModel : LoginModel
 @using Volo.Abp.Account.Settings
 @using Volo.Abp.Settings
 @model Acme.BookStore.Web.Pages.Account.CustomLoginModel
-@inherits Volo.Abp.Account.Web.Pages.Account.AccountPage
 @inject Volo.Abp.Settings.ISettingProvider SettingProvider
 @if (Model.EnableLocalLogin)
 {
@@ -106,7 +105,7 @@ public class CustomLoginModel : LoginModel
 
 ## 本文的源代码
 
-你可以在[这里](https://github.com/abpframework/abp-samples/tree/master/aspnet-core/Authentication-Customization)找到已完成的示例源码.
+你可以在[这里](https://github.com/abpframework/abp-samples/tree/master/Authentication-Customization)找到已完成的示例源码.
 
 ## 另请参阅
 

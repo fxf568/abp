@@ -5,12 +5,14 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.Application.Services;
 using Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations.ObjectExtending;
 using Volo.Abp.AspNetCore.Mvc.MultiTenancy;
 using Volo.Abp.Authorization;
+using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Features;
 using Volo.Abp.Localization;
 using Volo.Abp.MultiTenancy;
@@ -26,6 +28,9 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
         private readonly AbpMultiTenancyOptions _multiTenancyOptions;
         private readonly IServiceProvider _serviceProvider;
         private readonly IAbpAuthorizationPolicyProvider _abpAuthorizationPolicyProvider;
+        private readonly IPermissionDefinitionManager _permissionDefinitionManager;
+        private readonly DefaultAuthorizationPolicyProvider _defaultAuthorizationPolicyProvider;
+        private readonly IPermissionChecker _permissionChecker;
         private readonly IAuthorizationService _authorizationService;
         private readonly ICurrentUser _currentUser;
         private readonly ISettingProvider _settingProvider;
@@ -41,6 +46,9 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
             IOptions<AbpMultiTenancyOptions> multiTenancyOptions,
             IServiceProvider serviceProvider,
             IAbpAuthorizationPolicyProvider abpAuthorizationPolicyProvider,
+            IPermissionDefinitionManager permissionDefinitionManager,
+            DefaultAuthorizationPolicyProvider defaultAuthorizationPolicyProvider,
+            IPermissionChecker permissionChecker,
             IAuthorizationService authorizationService,
             ICurrentUser currentUser,
             ISettingProvider settingProvider,
@@ -53,6 +61,9 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
         {
             _serviceProvider = serviceProvider;
             _abpAuthorizationPolicyProvider = abpAuthorizationPolicyProvider;
+            _permissionDefinitionManager = permissionDefinitionManager;
+            _defaultAuthorizationPolicyProvider = defaultAuthorizationPolicyProvider;
+            _permissionChecker = permissionChecker;
             _authorizationService = authorizationService;
             _currentUser = currentUser;
             _settingProvider = settingProvider;
@@ -117,7 +128,13 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
                 Id = _currentUser.Id,
                 TenantId = _currentUser.TenantId,
                 UserName = _currentUser.UserName,
-                Email = _currentUser.Email
+                SurName = _currentUser.SurName,
+                Name = _currentUser.Name,
+                Email = _currentUser.Email,
+                EmailVerified = _currentUser.EmailVerified,
+                PhoneNumber = _currentUser.PhoneNumber,
+                PhoneNumberVerified = _currentUser.PhoneNumberVerified,
+                Roles = _currentUser.Roles
             };
         }
 
@@ -126,14 +143,38 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
             var authConfig = new ApplicationAuthConfigurationDto();
 
             var policyNames = await _abpAuthorizationPolicyProvider.GetPoliciesNamesAsync();
+            var abpPolicyNames = new List<string>();
+            var otherPolicyNames = new List<string>();
 
             foreach (var policyName in policyNames)
+            {
+                if(await _defaultAuthorizationPolicyProvider.GetPolicyAsync(policyName) == null && _permissionDefinitionManager.GetOrNull(policyName) != null)
+                {
+                    abpPolicyNames.Add(policyName);
+                }
+                else
+                {
+                    otherPolicyNames.Add(policyName);
+                }
+            }
+
+            foreach (var policyName in otherPolicyNames)
             {
                 authConfig.Policies[policyName] = true;
 
                 if (await _authorizationService.IsGrantedAsync(policyName))
                 {
                     authConfig.GrantedPolicies[policyName] = true;
+                }
+            }
+
+            var result = await _permissionChecker.IsGrantedAsync(abpPolicyNames.ToArray());
+            foreach (var (key, value) in result.Result)
+            {
+                authConfig.Policies[key] = true;
+                if (value == PermissionGrantResult.Granted)
+                {
+                    authConfig.GrantedPolicies[key] = true;
                 }
             }
 
@@ -171,6 +212,9 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
                 );
             }
 
+            localizationConfig.LanguagesMap = _localizationOptions.LanguagesMap;
+            localizationConfig.LanguageFilesMap = _localizationOptions.LanguageFilesMap;
+
             return localizationConfig;
         }
 
@@ -188,7 +232,8 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
                 ThreeLetterIsoLanguageName = CultureInfo.CurrentUICulture.ThreeLetterISOLanguageName,
                 DateTimeFormat = new DateTimeFormatDto
                 {
-                    CalendarAlgorithmType = CultureInfo.CurrentUICulture.DateTimeFormat.Calendar.AlgorithmType.ToString(),
+                    CalendarAlgorithmType =
+                        CultureInfo.CurrentUICulture.DateTimeFormat.Calendar.AlgorithmType.ToString(),
                     DateTimeFormatLong = CultureInfo.CurrentUICulture.DateTimeFormat.LongDatePattern,
                     ShortDatePattern = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern,
                     FullDateTimePattern = CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern,
@@ -206,14 +251,13 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
                 Values = new Dictionary<string, string>()
             };
 
-            foreach (var settingDefinition in _settingDefinitionManager.GetAll())
-            {
-                if (!settingDefinition.IsVisibleToClients)
-                {
-                    continue;
-                }
+            var settingDefinitions = _settingDefinitionManager.GetAll().Where(x => x.IsVisibleToClients);
 
-                result.Values[settingDefinition.Name] = await _settingProvider.GetOrNullAsync(settingDefinition.Name);
+            var settingValues = await _settingProvider.GetAllAsync(settingDefinitions.Select(x => x.Name).ToArray());
+
+            foreach (var settingValue in settingValues)
+            {
+                result.Values[settingValue.Name] = settingValue.Value;
             }
 
             return result;
@@ -238,25 +282,24 @@ namespace Volo.Abp.AspNetCore.Mvc.ApplicationConfigurations
 
         protected virtual async Task<TimingDto> GetTimingConfigAsync()
         {
-            var result = new TimingDto();
-
             var windowsTimeZoneId = await _settingProvider.GetOrNullAsync(TimingSettingNames.TimeZone);
-            if (!windowsTimeZoneId.IsNullOrWhiteSpace())
+
+            return new TimingDto
             {
-                result.TimeZone = new TimeZone
+                TimeZone = new TimeZone
                 {
                     Windows = new WindowsTimeZone
                     {
                         TimeZoneId = windowsTimeZoneId
                     },
-                    Iana = new IanaTimeZone()
+                    Iana = new IanaTimeZone
                     {
-                        TimeZoneName = _timezoneProvider.WindowsToIana(windowsTimeZoneId)
+                        TimeZoneName = windowsTimeZoneId.IsNullOrWhiteSpace()
+                            ? null
+                            : _timezoneProvider.WindowsToIana(windowsTimeZoneId)
                     }
-                };
-            }
-
-            return result;
+                }
+            };
         }
 
         protected virtual ClockDto GetClockConfig()

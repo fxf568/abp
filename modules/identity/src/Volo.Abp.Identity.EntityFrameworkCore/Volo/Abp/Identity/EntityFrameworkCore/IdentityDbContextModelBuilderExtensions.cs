@@ -43,6 +43,9 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
                 b.Property(u => u.LockoutEnabled).HasDefaultValue(false)
                     .HasColumnName(nameof(IdentityUser.LockoutEnabled));
 
+                b.Property(u => u.IsExternal).IsRequired().HasDefaultValue(false)
+                    .HasColumnName(nameof(IdentityUser.IsExternal));
+
                 b.Property(u => u.AccessFailedCount)
                     .If(!builder.IsUsingOracle(), p => p.HasDefaultValue(0))
                     .HasColumnName(nameof(IdentityUser.AccessFailedCount));
@@ -126,9 +129,6 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
 
                 b.Property(r => r.Name).IsRequired().HasMaxLength(IdentityRoleConsts.MaxNameLength);
                 b.Property(r => r.NormalizedName).IsRequired().HasMaxLength(IdentityRoleConsts.MaxNormalizedNameLength);
-                b.Property(u => u.ConcurrencyStamp).IsRequired().IsConcurrencyToken()
-                    .HasMaxLength(IdentityRoleConsts.MaxConcurrencyStampLength)
-                    .HasColumnName(nameof(IdentityRole.ConcurrencyStamp));
                 b.Property(r => r.IsDefault).HasColumnName(nameof(IdentityRole.IsDefault));
                 b.Property(r => r.IsStatic).HasColumnName(nameof(IdentityRole.IsStatic));
                 b.Property(r => r.IsPublic).HasColumnName(nameof(IdentityRole.IsPublic));
@@ -152,21 +152,21 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
                 b.HasIndex(uc => uc.RoleId);
             });
 
-            builder.Entity<IdentityClaimType>(b =>
+            if (builder.IsHostDatabase())
             {
-                b.ToTable(options.TablePrefix + "ClaimTypes", options.Schema);
+                builder.Entity<IdentityClaimType>(b =>
+                {
+                    b.ToTable(options.TablePrefix + "ClaimTypes", options.Schema);
 
-                b.ConfigureByConvention();
+                    b.ConfigureByConvention();
 
-                b.Property(uc => uc.Name).HasMaxLength(IdentityClaimTypeConsts.MaxNameLength)
-                    .IsRequired(); // make unique
-                b.Property(uc => uc.Regex).HasMaxLength(IdentityClaimTypeConsts.MaxRegexLength);
-                b.Property(uc => uc.RegexDescription).HasMaxLength(IdentityClaimTypeConsts.MaxRegexDescriptionLength);
-                b.Property(uc => uc.Description).HasMaxLength(IdentityClaimTypeConsts.MaxDescriptionLength);
-                b.Property(uc => uc.ConcurrencyStamp).IsRequired().IsConcurrencyToken()
-                    .HasMaxLength(IdentityClaimTypeConsts.MaxConcurrencyStampLength)
-                    .HasColumnName(nameof(IdentityClaimType.ConcurrencyStamp));
-            });
+                    b.Property(uc => uc.Name).HasMaxLength(IdentityClaimTypeConsts.MaxNameLength)
+                        .IsRequired(); // make unique
+                    b.Property(uc => uc.Regex).HasMaxLength(IdentityClaimTypeConsts.MaxRegexLength);
+                    b.Property(uc => uc.RegexDescription).HasMaxLength(IdentityClaimTypeConsts.MaxRegexDescriptionLength);
+                    b.Property(uc => uc.Description).HasMaxLength(IdentityClaimTypeConsts.MaxDescriptionLength);
+                });
+            }
 
             builder.Entity<OrganizationUnit>(b =>
             {
@@ -210,6 +210,49 @@ namespace Volo.Abp.Identity.EntityFrameworkCore
 
                 b.HasIndex(ou => new {ou.UserId, ou.OrganizationUnitId});
             });
+
+            builder.Entity<IdentitySecurityLog>(b =>
+            {
+                b.ToTable(options.TablePrefix + "SecurityLogs", options.Schema);
+
+                b.ConfigureByConvention();
+
+                b.Property(x => x.TenantName).HasMaxLength(IdentitySecurityLogConsts.MaxTenantNameLength);
+
+                b.Property(x => x.ApplicationName).HasMaxLength(IdentitySecurityLogConsts.MaxApplicationNameLength);
+                b.Property(x => x.Identity).HasMaxLength(IdentitySecurityLogConsts.MaxIdentityLength);
+                b.Property(x => x.Action).HasMaxLength(IdentitySecurityLogConsts.MaxActionLength);
+
+                b.Property(x => x.UserName).HasMaxLength(IdentitySecurityLogConsts.MaxUserNameLength);
+
+                b.Property(x => x.ClientIpAddress).HasMaxLength(IdentitySecurityLogConsts.MaxClientIpAddressLength);
+                b.Property(x => x.ClientId).HasMaxLength(IdentitySecurityLogConsts.MaxClientIdLength);
+                b.Property(x => x.CorrelationId).HasMaxLength(IdentitySecurityLogConsts.MaxCorrelationIdLength);
+                b.Property(x => x.BrowserInfo).HasMaxLength(IdentitySecurityLogConsts.MaxBrowserInfoLength);
+
+                b.HasIndex(x => new { x.TenantId, x.ApplicationName });
+                b.HasIndex(x => new { x.TenantId, x.Identity });
+                b.HasIndex(x => new { x.TenantId, x.Action });
+                b.HasIndex(x => new { x.TenantId, x.UserId });
+            });
+
+            if (builder.IsHostDatabase())
+            {
+                builder.Entity<IdentityLinkUser>(b =>
+                {
+                    b.ToTable(options.TablePrefix + "LinkUsers", options.Schema);
+
+                    b.ConfigureByConvention();
+
+                    b.HasIndex(x => new
+                    {
+                        UserId = x.SourceUserId,
+                        TenantId = x.SourceTenantId,
+                        LinkedUserId = x.TargetUserId,
+                        LinkedTenantId = x.TargetTenantId
+                    }).IsUnique();
+                });
+            }
         }
     }
 }
